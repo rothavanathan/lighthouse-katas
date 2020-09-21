@@ -4,8 +4,9 @@ function camel(input) {
     for (let i = 0; i < inputArray.length; i++){
         if (i === 0) {
             camelString += inputArray[0];
+        } else {
+            camelString += (inputArray[i][0].toUpperCase() + inputArray[i].slice(1));
         }
-            camelString += (inputArray[i][0].toUpperCase() + inputArray[i].slice(1))
     }
     return camelString;
 }
@@ -98,48 +99,67 @@ function lower(input) {
     return lowerString;
 }
 
-const makeCase = function(input, caseArray) {
-    if (typeof caseArray === "String"){
-        switch(caseArray){
+const makeCase = function(input, caseInput) {
+    let sortedArray = [];
+    let caseArray;
+    //if second param is string, convet to array
+    caseArray = typeof caseInput === "string" ? [caseInput]: caseInput;
+    //sort array
+    const highPriority = ["camel", "pascal", "snake", "kebab", "title"];
+    caseArray.forEach(userCase => {
+        if (highPriority.indexOf(userCase) !== -1) {
+            sortedArray.push(userCase);
+        }
+    })
+    //vowel,consonant 
+    const medPriority = ["vowel", "consonant"];
+    caseArray.forEach(userCase => {
+        if (medPriority.indexOf(userCase) !== -1) {
+            sortedArray.push(userCase);
+        }
+    })
+    //upper,lower pop
+    const lowPriority = ["upper", "lower"];
+    caseArray.forEach(userCase => {
+        if (lowPriority.indexOf(userCase) !== -1) {
+            sortedArray.push(userCase);
+        }
+    })
+    //loop through cases
+    sortedArray.forEach(sortedCase => {    
+        switch(sortedCase){
             case "camel":
-                camel(input);
+                input = camel(input);
                 break;
             case "pascal":
-                pascal(input);
+                input = pascal(input);
                 break;
             case "snake":
-                snake(input);
+                input = snake(input);
                 break;
             case "kebab":
-                kebab(input);
+                input = kebab(input);
                 break;
             case "title":
-                title(input);
+                input = title(input);
                 break;
             case "vowel":
-                vowel(input);
+                input = vowel(input);
                 break;
             case "consonant":
-                consonant(input);
+                input = consonant(input);
                 break;
             case "upper":
-                upper(input);
+                input = upper(input);
                 break;
             case "lower":
-                lower(input);
+                input = lower(input);
                 break;
-        }
-    }
-    // Put your solution here
-    //priority 
-    //camel,pascal,snake,kebab,title
+            }    
+    })
+        return input;
+}
 
-    //vowel,consonant
-
-    //upper,lower
-    
-
-  }
   
   console.log(makeCase("this is a string", "camel"));
   console.log(makeCase("this is a string", "pascal"));
